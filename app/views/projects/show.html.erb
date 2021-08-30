@@ -1,0 +1,43 @@
+<style type="text/css">
+  ul {
+        font-size: 17px;
+        color: $white;
+  }
+
+  h1 {
+    color:  #8EE4AF;
+    font-weight: bold;
+    font-family: "Gill Sans Extrabold", sans-serif;
+    padding-bottom: 10px;
+  }
+  
+  p {
+    font-size: 20px;
+    color: lightblue;
+  }
+
+</style>
+
+<body>
+<div class="col-12 text-left">
+
+  <%= link_to 'Back', projects_path %> |  
+  <% if policy(@project).update? %>
+     <%= link_to 'Edit', edit_project_path(@project) %>  
+  <% end %>
+  
+  <p><h1><%= @project.title %></h1></p>
+
+  <p><%= @project.description %></p><br>
+  <%= render partial: 'shared/team', locals: {members: @project.users, manager: @project.manager, project:@project} %><br><br>
+
+  <h2>Bugs</h2>
+  <% for bug in @project.bugs %>
+    <ul>
+      <li><%= bug.title %></li>
+  </ul>
+<% end %>
+<%= link_to 'Add Bug', project_bugs_path(@project) %> |
+
+</body>
+</div>

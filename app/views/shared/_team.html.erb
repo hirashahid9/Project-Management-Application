@@ -1,0 +1,39 @@
+
+
+<div class="row">
+  <div class="col">
+    <h3 style="color: #8EE4AF; padding-top: 30px; font-weight: bold;">Team:</h3>
+  </div>
+  <div class="col">
+<% if policy(project).addmember? %>
+    <div class="project-tools desktop-tools text-right pull-up" style="margin-top: 20px;">
+      <%= button_to 'Add/Remove Members', addmember_path(proj_id: project.id), {class: "btn btn-secondary"} %>
+    </div>
+<% end %>
+</div>
+</div>
+
+<table class="table table-hover table-dark">
+  <thead>
+    <tr style="color:#8EF4AF ; ">
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      <tr style="color: lightblue;">
+        <td><%= manager.name %></td>
+        <td><%= manager.email %></td>
+        <td><%= manager.role.name %></td>
+      </tr>
+    <% members.each do |member| %>
+      <tr style="color: lightblue;">
+        <td><%= member.name %></td>
+        <td><%= member.email %></td>
+        <td><%= member.role.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

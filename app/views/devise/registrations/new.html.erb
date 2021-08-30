@@ -1,0 +1,66 @@
+<style>
+ input{
+    display:inline-block;
+    width: 500px;
+ }
+   body { 
+  background-image: url(<%= asset_path 'p2.jpeg' %>);
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+ select{
+    display:inline-block;
+    width: 500px;
+    background-color: gray;
+    border-color: gray;
+ }
+
+ </style>
+
+<body class="text-center">
+    <h1 class="page-header">Sign Up</h2><br><br>
+
+
+    <div class="justify-content-center">
+      <%= render "devise/shared/error_messages", resource: resource %>
+    </div>
+   
+  <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: {style: "font-size: 20px"} do |f| %>
+   
+  <div class="form-inline justify-content-center">
+    <%= f.text_field :name, placeholder: "Name",  class: "rounded" %>
+  </div>
+  <br>
+
+  <div class="form-inline justify-content-center">
+    <%= f.email_field :email, autofocus: true, autocomplete: "email",placeholder: "Email", class: "rounded" %>
+  </div>
+  <br>
+
+<div class="col-xs-7">
+  <div class="form-inline justify-content-center ">
+    <%= f.password_field :password, autocomplete: "new-password",placeholder: "Password (6 characters minimum)", class: "rounded" %>
+  </div><br>
+</div>
+
+  <div class="form-inline justify-content-center">
+<%#    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password",placeholder: "Password Confirmation", class: "rounded" %>
+  </div><br>
+
+  <div class="form-inline justify-content-center">
+    <%#<%= f.label :role %>
+    <%= f.select :role_id,  options_for_select([[Role.find(1).name, Role.find(1).id], [Role.find(2).name, Role.find(2).id],[Role.find(3).name, Role.find(3).id]]), {include_blank: 'Select a Role.'}%>
+</div><br><br>
+
+  <div class="actions">
+    <%= f.submit("Sign up",{:class=>"w-25 btn btn-primary", :style=>"font-size: 20px; color:black; background-color: #8EE4AF;"}) %>
+  </div>
+<% end %>
+
+<%= render "devise/shared/links" %>
+
+</body>

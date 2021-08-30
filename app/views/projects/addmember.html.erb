@@ -1,0 +1,43 @@
+
+
+<h1 style="margin-bottom: 10px;">Select Members</h1>
+<%= form_with url: addall_path, method: :get do |form| %>
+<%= form.submit "Save Members",  class: 'btn btn-secondary btn-hover' %><br><br><br>
+
+<div class="row" style="margin-top: 30px">
+
+<div class="col">
+  <h3>Developers</h3>
+  <p style="color: green;">
+  <% @dev.each do |u|%>
+	  <% if @projusers.include? (u.id) %>
+			<%= check_box_tag 'dev_ids[]', u.id, true -%>
+	    <%=  h u.name -%><br>
+	  <% else %>
+	  	<%= check_box_tag 'dev_ids[]', u.id-%>
+	    <%= h u.name -%><br>
+	  <% end %>
+  <%end%>
+  </p>
+  </div>
+
+  <div class="col">
+
+   <h3 style="color: orangered; ">QAs</h3>
+   <p style="color: orangered;">
+	<% @qa.each do |u|%>
+		<% if @projusers.include? (u.id) %>
+			  <%= check_box_tag 'qa_ids[]', u.id, true -%>
+	      <h3><%= u.name %></h3>
+	  <% else %>
+		   	<%= check_box_tag 'qa_ids[]', u.id -%>
+		    <%= h u.name -%><br>
+	  <% end %>
+	<% end %>
+	</p>
+	</div>
+
+</div>
+
+	<%= form.hidden_field :id, value: params[:proj_id]%>
+<% end %>

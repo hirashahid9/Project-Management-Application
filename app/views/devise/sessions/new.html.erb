@@ -1,0 +1,52 @@
+<style type="text/css">
+
+  body { 
+  background-image: url(<%= asset_path 'p2.jpeg' %>);
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+  .signin label{
+    color:  #8EE4AF;
+    display:inline-block;
+    width: 200px;
+    font-size: 20px;
+    background-color: transparent;
+ }
+
+</style>
+<body class="text-center">
+  <main class="form-signin">
+<h1 class="h1 mb-4 fw-bold">Log In</h1><br><br>
+<%= form_for resource, as: resource_name, url: session_path(resource_name), html: {style: "font-size: 20px"} do |f| %>
+<div class="signin">
+ <div class="form-inline justify-content-center">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+  <br>
+  <div class="form-inline justify-content-center">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+  <br>
+  <% if devise_mapping.rememberable? %>
+    <div class="checkbox mb-3 justify-content-center form-inline">
+      <%= f.check_box :remember_me %>&nbsp
+      <%= f.label :remember_me %>
+    </div>
+  <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit("Log in",{:class=>" btn btn-primary", :style=>"font-size: 20px; background-color: #8EE4AF; color: black; margin-left:70px; padding-left:200px; padding-right:200px"})%>
+  </div>
+<% end %>
+</main>
+</body>
+<%= render "devise/shared/links" %>
+
+
