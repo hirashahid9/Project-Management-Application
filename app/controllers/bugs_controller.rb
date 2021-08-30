@@ -61,7 +61,6 @@ class BugsController < ApplicationController
   end
 
   private
-
     def get_project
       @project = Project.friendly.find(params[:project_id])
     end

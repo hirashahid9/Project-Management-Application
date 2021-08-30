@@ -17,6 +17,7 @@ class ProjectsController < ApplicationController
   def show
     @dev=@project.users.where('role_id=?',2)
     @qa=@project.users.where('role_id=?',3)
+    
     @project=Project.friendly.find(params[:id])
   end
 

@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_30_093643) do
+ActiveRecord::Schema.define(version: 2021_08_30_130949) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bugs", force: :cascade do |t|
     t.string "title"
@@ -23,6 +26,8 @@ ActiveRecord::Schema.define(version: 2021_08_30_093643) do
     t.string "slug"
     t.index ["project_id"], name: "index_bugs_on_project_id"
     t.index ["slug"], name: "index_bugs_on_slug", unique: true
+    t.index ["status"], name: "index_bugs_on_status"
+    t.index ["types"], name: "index_bugs_on_types"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -43,6 +48,7 @@ ActiveRecord::Schema.define(version: 2021_08_30_093643) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "manager_id"
     t.string "slug"
+    t.index ["manager_id"], name: "index_projects_on_manager_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -50,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_08_30_093643) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_roles_on_name"
   end
 
   create_table "user_projects", force: :cascade do |t|
@@ -73,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_08_30_093643) do
     t.string "name"
     t.string "slug"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "index_users_on_name"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
     t.index ["slug"], name: "index_users_on_slug", unique: true
