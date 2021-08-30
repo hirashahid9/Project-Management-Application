@@ -13,15 +13,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
  def manager?
-  role_id == 1
+  mID=Role.where(name: 'Manager').ids
+  role_id == mID[0]
  end
 
  def developer?
-  role_id == 2
+  dID=Role.where(name: 'Developer').ids
+  role_id == dID[0]
  end
 
  def qa?
-  role_id == 3
+  qID=Role.where(name: 'QA').ids
+  role_id == qID[0]
  end
 
 end

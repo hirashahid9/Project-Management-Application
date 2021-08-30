@@ -8,22 +8,6 @@ class ApplicationController < ActionController::Base
 	def after_sign_in_path_for(resource)
 	  projects_path # your path
 	end
-
-	def getdata
-
-    @type = params[:type]
-    @data_for_select2=[]
-
-    if @type == "Feature"
-    	@data_for_select2 = ["new","started","completed"]
-    elsif @type == "Bug"
-    	@data_for_select2 = ["new","started","resolved"]	
-    end
-    	
-    # render an array in JSON containing arrays like:
-    # [[:id1, :name1], [:id2, :name2]]
-    render :json => @data_for_select2
-  end
 	
 	
   	private

@@ -3,6 +3,9 @@ class ProjectsController < ApplicationController
 
   # GET /projects or /projects.json
   def index
+    if current_user.nil?
+      redirect_to '/',notice: "Access denied"
+    end
     if(current_user && current_user.developer?)
       @projects=policy_scope(Project)
     else
@@ -14,7 +17,7 @@ class ProjectsController < ApplicationController
   def show
     @dev=@project.users.where('role_id=?',2)
     @qa=@project.users.where('role_id=?',3)
-    @project=@project
+    @project=Project.friendly.find(params[:id])
   end
 
   # GET /projects/new
@@ -68,6 +71,7 @@ class ProjectsController < ApplicationController
         format.html { redirect_to @project, notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
       else
+        flash[:alert]="Project couldn't be created."
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
@@ -81,6 +85,7 @@ class ProjectsController < ApplicationController
         format.html { redirect_to @project, notice: "Project was successfully updated." }
         format.json { render :show, status: :ok, location: @project }
       else
+        flash[:alert]="Project couldn't be updated."
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @project.errors, status: :unprocessable_entity }
       end
@@ -99,7 +104,7 @@ class ProjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params[:id])
+      @project=Project.friendly.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

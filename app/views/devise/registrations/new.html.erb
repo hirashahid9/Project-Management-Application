@@ -52,8 +52,9 @@
   </div><br>
 
   <div class="form-inline justify-content-center">
-    <%#<%= f.label :role %>
-    <%= f.select :role_id,  options_for_select([[Role.find(1).name, Role.find(1).id], [Role.find(2).name, Role.find(2).id],[Role.find(3).name, Role.find(3).id]]), {include_blank: 'Select a Role.'}%>
+    <% r = Role.all
+       roles = r.map { |role| [role.name,role.id] } %>
+    <%= f.select :role_id,  options_for_select(roles), {include_blank: 'Select a Role.'}%>
 </div><br><br>
 
   <div class="actions">

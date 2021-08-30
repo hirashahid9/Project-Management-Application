@@ -9,6 +9,7 @@ class BugsController < ApplicationController
 
   # GET /bugs/1 or /bugs/1.json
   def show
+    @bug=Bug.friendly.find(params[:id])
   end
 
   # GET /bugs/new
@@ -29,6 +30,7 @@ class BugsController < ApplicationController
         format.html { redirect_to project_bugs_path(@project), notice: "Bug was successfully created." }
         format.json { render :show, status: :created, location: @bug }
       else
+        flash[:alert]="Bug couldn't be created."
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @bug.errors, status: :unprocessable_entity }
       end
@@ -42,6 +44,7 @@ class BugsController < ApplicationController
         format.html { redirect_to project_bug_path(@project), notice: "Bug was successfully updated." }
         format.json { render :show, status: :ok, location: @bug }
       else
+        flash[:alert]="Bug couldn't be updated."
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @bug.errors, status: :unprocessable_entity }
       end
@@ -60,13 +63,13 @@ class BugsController < ApplicationController
   private
 
     def get_project
-      @project = Project.find(params[:project_id])
+      @project = Project.friendly.find(params[:project_id])
     end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_bug
-      @project=Project.find(params[:project_id])
-      @bug = @project.bugs.find(params[:id])
+      @project=Project.friendly.find(params[:project_id])
+      @bug = @project.bugs.friendly.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

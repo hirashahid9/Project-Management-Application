@@ -1,4 +1,6 @@
 class Project < ApplicationRecord
+    extend FriendlyId
+    friendly_id :title, use: :slugged
 
 	has_many :user_projects, dependent: :destroy
     has_many :users, :through => :user_projects
