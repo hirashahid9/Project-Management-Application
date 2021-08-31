@@ -24,10 +24,11 @@ class BugsController < ApplicationController
   # POST /bugs or /bugs.json
   def create
     @bug = @project.bugs.build(bug_params)
-
+    @bug.creator=current_user
+    
     respond_to do |format|
       if @bug.save
-        format.html { redirect_to project_bugs_path(@project), notice: "Bug was successfully created." }
+        format.html { redirect_to project_path(@project), notice: "Bug was successfully created." }
         format.json { render :show, status: :created, location: @bug }
       else
         flash[:alert]="Bug couldn't be created."
@@ -36,6 +37,23 @@ class BugsController < ApplicationController
       end
     end
   end
+
+  def assignuser
+    @bug=Bug.where('id=?',params[:bug_id])
+    Bug.where( id: params[:bug_id] ).update_all( developer_id: current_user.id, status: 'Started' )
+    redirect_to project_bug_path(@project,Bug.find(params[:bug_id])), notice: "Bug was assigned to #{current_user.name}."
+  end
+
+  def resolveBug
+    @bug=Bug.where('id=?',params[:bug_id]).select(:types)
+    if @bug == "Feature"
+      Bug.where( id: params[:bug_id] ).update_all( status: 'Completed' )
+    else
+        Bug.where( id: params[:bug_id] ).update_all( status: 'Resolved' )
+    end
+    redirect_to project_path(@project), notice: "Bug #{params[:bug_id]} has been resolved."
+  end
+
 
   # PATCH/PUT /bugs/1 or /bugs/1.json
   def update
@@ -55,7 +73,7 @@ class BugsController < ApplicationController
   def destroy
     @bug.destroy
     respond_to do |format|
-      format.html { redirect_to project_bugs_path(@project), notice: "Bug was successfully destroyed." }
+      format.html { redirect_to project_path(@project), notice: "Bug was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -73,6 +91,6 @@ class BugsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bug_params
-      params.require(:bug).permit(:title, :description, :types, :status, :project_id)
+      params.require(:bug).permit(:title, :description, :types, :status, :project_id,:image)
     end
 end

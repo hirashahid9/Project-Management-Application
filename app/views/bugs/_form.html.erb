@@ -1,37 +1,89 @@
-<%= form_with(model: [@project,bug]) do |form| %>
+<%= form_with(model: [@project, bug], local: true) do |form| %>
   <% if bug.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(bug.errors.count, "error") %> prohibited this bug from being saved:</h2>
 
       <ul>
         <% bug.errors.each do |error| %>
-          <li style="color: red"><%= error.full_message %></li>
+          <li style="color:black;"><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
+  <div class="field" style="margin-bottom: 20px;">
+    <%= form.label :title %><br>
+    <%= form.text_area :title, cols: 100, rows: 1 %>
   </div>
 
-  <div class="field">
-    <%= form.label :description %>
-    <%= form.text_area :description %>
+  <div class="field" style="margin-bottom: 40px;">
+    <%= form.label :description %><br>
+    <%= form.text_area :description, cols: 100, rows: 8 %>
   </div>
 
-  <div class="field">
-    <%= form.label :types %>
-    <%= form.text_field :types %>
+  <div class="detail">
+  <div class="field" style="margin-bottom: 5px;">
+    <%= form.label 'Type:  ' %>
+    <%= form.select :types,  options_for_select([['Feature','Feature'],['Bug','Bug']]),{prompt: "--Select an option--"},{:onchange =>"alert()"} %> 
+  </div><br>
+
+  <div class="field" style="margin-bottom: 5px;">
+    <%= form.label 'Status:  ' %>
+    <%= form.select :status,{},{prompt: "--Select an option--"} %>
+  </div><br>
+
+ <div>
+    <%= form.label 'Screenshot: ' %>
+    <%= form.file_field :image , class: "filefield" %>
+  </div><br>
   </div>
 
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.text_field :status %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+  <div class="actions" style="padding-right: 220px;">
+    <%= form.submit 'Save', class: 'btn btn-dark btn-block'%>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  function alert(){
+
+    var value=document.getElementById('bug_types').value;
+    var select = document.getElementById('bug_status'); 
+    select.innerHTML = "";
+
+    var bugOptions = ["new","started","resolved"];
+    var featureOptions = ["new","started","completed"]; 
+
+
+    var el = document.createElement("option");
+    el.text = "--Select an option--";
+    el.value = "";
+    select.add(el);
+    
+
+    if(value == "Feature")
+    {
+      for(var i = 0; i < featureOptions.length; i++) {
+          var opt = featureOptions[i];
+
+          var el = document.createElement("option");
+          el.text = opt;
+          el.value = opt;
+
+          select.add(el);
+      }
+    }
+    else if(value == "Bug")
+    {
+      for(var i = 0; i < bugOptions.length; i++) {
+          var opt = bugOptions[i];
+
+          var el = document.createElement("option");
+          el.text = opt;
+          el.value = opt;
+
+          select.add(el);
+      } 
+    }
+
+  }
+</script>

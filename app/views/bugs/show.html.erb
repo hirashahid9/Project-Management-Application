@@ -1,17 +1,67 @@
-<p id="notice"><%= notice %></p>
+<style type="text/css">
+  h1 {
+    color:  orangered;
+    font-weight: bold;
+    font-family: "Gill Sans Extrabold", sans-serif;
+    padding-bottom: 10px;
+  }
+  p {
+    font-size: 20px;
+    color: darkorange;
+  }
+
+  .detail p{
+    font-size: 20px;
+    color: darkorange;
+  }
+
+  .detail strong{
+    color: orangered;
+    display:inline-block;
+    width: 200px;
+  }
+
+</style>
+
+
+
+<div class="detail">
+
+<%= link_to 'Back', @project %>
+  
+<div class="row">
+  <div class="col">
+  <p><h1><%= @bug.title %></h1></p>
+  </div>
+  <div class="col" style="margin-top: 20px;">
+    <% if policy(@bug).resolveBug? && @bug.status.downcase == "Started".downcase%>
+      <%= button_to 'Mark Resolved', resolve_path(project_id: @project.id,bug_id: @bug.id), {class: "btn btn-success" } %>
+    <% end %>
+    <% if policy(@bug).assignuser? && @bug.status.downcase == "New".downcase%>
+      <%= button_to 'Assign to Self', assign_path(project_id: @project.id,bug_id: @bug.id), {class: "btn btn-success" } %>
+    <% end %>
+
+    <% if policy(@bug).update? %>
+       <td><%= link_to 'Edit', edit_project_bug_path(@project,@bug), {class: "btn btn-secondary", style: "color: black; margin-right: 20px" } %></td>
+    <% end %>
+
+    <% if policy(@bug).destroy? %>
+      <td><%= link_to 'Destroy', [@project, @bug], method: :delete, data: { confirm: 'Are you sure?'}, :class=> "btn btn-danger", :style=>"color: black" %></td>
+    <% end %>  
+  </div>
+</div>
 
 <p>
-  <strong>Title:</strong>
-  <%= @bug.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
   <%= @bug.description %>
+</p><br><br>
+
+<p class="detail">
+  <strong>Project:</strong>
+  <%= @bug.project.title %>
 </p>
 
 <p>
-  <strong>Types:</strong>
+  <strong>Type:</strong>
   <%= @bug.types %>
 </p>
 
@@ -21,9 +71,24 @@
 </p>
 
 <p>
-  <strong>Project:</strong>
-  <%= @bug.project_id %>
+  <strong>Created by :</strong>
+  <%= @bug.creator.name %>
 </p>
 
-<%= link_to 'Edit', edit_project_bug_path(@project,@bug) %> |
-<%= link_to 'Back', project_bugs_path(@project) %>
+<p>
+  <strong>Assigned to:</strong>
+  <% if @bug.developer.nil?%>
+    Not Assigned yet.
+  <% else%>
+    <%= @bug.developer.name %>
+  <% end %>
+</p>
+
+<% if @bug.image %>
+<br><strong style="font-size: 17px;">Attachments:</strong><br><br>
+<%= link_to(image_tag(@bug.image.thumb.url, alt: 'Image'), @bug.image.url, target: '_blank') if @bug.image? %>
+<% end %>
+</div>
+
+<%#<%= image_tag(@bug.image.url, alt: 'Image') if @bug.image? %> 
+<br>

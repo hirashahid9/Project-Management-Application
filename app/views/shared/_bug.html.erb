@@ -1,0 +1,60 @@
+
+
+<div class="row">
+  <div class="col">
+    <h3 style="color: orangered; font-weight: bold;">Bugs:</h3>
+  </div>
+  <div class="col">
+<% if policy(Bug).create? %>
+  <%= link_to 'Add Bug', new_project_bug_path(@project), {class: "btn btn-secondary", style: "color:white; border-color: orange; background-color: orangered;"}  %> 
+<% end %>
+</div>
+</div>
+<br>
+
+<table id="bug-table" class="table table-hover table-dark">
+  <thead>
+    <tr style="color: orangered; ">
+      <th scope="col">#</th>
+      <th scope="col">Title</th>
+      <th scope="col">Description</th>
+      <th scope="col">Type</th>
+      <th scope="col">Status</th>
+      <th scope="col">Created by</th>
+      <th scope="col">Assigned to</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% i=0 %>
+    <% bugs.each do |bug| %>
+      <% i=i+1 %>
+      <tr id="bug-row-<%=i%>" style="color: orange;" data-link="<%= project_bug_path(project,bug) %>">
+        <td><%= bug.id %></td>
+        <td><%= bug.title %></td>
+        <td><%= bug.description %></td>
+        <% if bug.types.downcase =='feature'%>
+        <td><span style="color: yellowgreen; font-weight: bold"><%= bug.types %></span></td>
+        <% else %>
+        <td><span style="color: red; font-weight: bold"><%= bug.types %></span></td>
+        <% end %>
+        <td><%= bug.status %></td>
+        <% name = !bug.creator.nil? ? bug.creator.name : '' %>
+        <td><%= name %></td>
+        
+        <% if bug.developer.nil? && policy(Bug).assignuser? && bug.status.downcase == "New".downcase %>        
+            <td><%= link_to 'Assign to self', assign_path(project_id: @project.id,bug_id: bug.id), style: "color:orangered" %></td>
+        <% else %>
+          <% name = !bug.developer.nil? ? bug.developer.name : '' %>
+          <td><%= name %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<script type="text/javascript">
+  $("#bug-table tr").click(function() {
+    console.log("clicked")
+  window.location = $(this).data("link")
+})
+</script>   

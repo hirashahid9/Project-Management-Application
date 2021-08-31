@@ -39,5 +39,5 @@
 	p "Created #{User.count} users"
 
 	project= Project.create(title: 'First Project', description: 'This is my first project', manager: users[0])
-	bug = Bug.create(title: 'Bug#1',description: 'First bug of first project', types: 'Bug',status:'New',project: project)
+	bug = Bug.create(title: 'Bug#1',description: 'First bug of first project', types: 'Bug',status:'New',project: project, creator: users[2])
 

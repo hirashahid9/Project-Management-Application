@@ -30,14 +30,7 @@
 
   <p><%= @project.description %></p><br>
   <%= render partial: 'shared/team', locals: {members: @project.users, manager: @project.manager, project:@project} %><br><br>
-
-  <h2>Bugs</h2>
-  <% for bug in @project.bugs %>
-    <ul>
-      <li><%= bug.title %></li>
-  </ul>
-<% end %>
-<%= link_to 'Add Bug', project_bugs_path(@project) %> |
+  <%= render partial: 'shared/bug', locals: {bugs: @project.bugs, project: @project} %>
 
 </body>
 </div>

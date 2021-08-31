@@ -15,8 +15,12 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-    @dev=@project.users.where('role_id=?',2)
-    @qa=@project.users.where('role_id=?',3)
+
+    dev_id=Role.where(name: 'Developer').select(:id)
+    qa_id=Role.where(name: 'QA').select(:id)
+
+    @dev=@project.users.where('role_id=?',dev_id)
+    @qa=@project.users.where('role_id=?',qa_id)
     
     @project=Project.friendly.find(params[:id])
   end
@@ -34,9 +38,15 @@ class ProjectsController < ApplicationController
   def addmember
     u=UserProject.where('project_id=?',params[:proj_id]).select(:user_id)
     @projusers=u.pluck(:user_id)
-    @dev=User.where('role_id=?',2)
-    @qa=User.where('role_id=?',3)
     @project=Project.where('id=?',params[:proj_id])
+
+
+    dev_id=Role.where(name: 'Developer').select(:id)
+    qa_id=Role.where(name: 'QA').select(:id)
+
+    @dev=User.where('role_id=?',dev_id[0])
+    @qa=User.where('role_id=?',qa_id[0])
+
   end
 
   def addall
